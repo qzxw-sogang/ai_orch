@@ -1,6 +1,6 @@
 class Customer:
-    '''고객 이름, 등급, 할인율, 적립율 관리'''
-    def __init__(self, name, grade = "basic"):
+    '''고객 이름, 등급, 포인트 관리'''
+    def __init__(self, name, grade="basic"):
         self.name = name
         self.grade = grade
         self.points = 0
@@ -17,7 +17,7 @@ class Customer:
             return 0.03
 
     def summary(self):
-        '''고객 정보 요약'''
+        '''고객 정보 요약(등급, 이름, 총 적립 포인트)'''
         return f"[{self.grade}] {self.name} (포인트: {self.points:,})"
 
 class Order:
@@ -38,6 +38,24 @@ class Order:
         self.items.append((name, price))
 
     def pay(self):
-        '''결제 시 할인 적용 금액에서 5% 포인트 적립'''
+        '''결제 시 할인 적용 금액에서 적립율만큼 적립'''
         self.customer.add_points(self.total_price())
-        return f"포인트: {self.customer.points:,}원"
+
+c1 = Customer("김철수")
+c2 = Customer("이영희", "vip")
+
+o1 = Order("01", c1, [("생수", 700)])
+o1.add_item("삼각김밥", 2000) # 상품 추가
+print(f"결제 금액: {o1.total_price():,}원")
+o1.pay()
+print(o1.customer.summary())
+
+o2 = Order("02", c2, [("치즈", 10000), ("와인", 50000)])
+print(f"결제 금액: {o2.total_price():,}원")
+o2.pay()
+print(o2.customer.summary())
+
+o3 = Order("03", c2, [("위스키", 70000)])
+print(f"결제 금액: {o3.total_price():,}원")
+o3.pay()
+print(o3.customer.summary())
