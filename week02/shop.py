@@ -6,8 +6,8 @@ class Customer:
         self.points = 0
 
     def add_points(self, amount):
-        '''구매액의 7% 적립'''
-        self.points += int(amount*0.07) # 소수점 버림
+        '''구매액의 10% 적립'''
+        self.points += int(amount*0.10) # 소수점 버림
 
     def get_discount_rate(self):
         '''고객 등급에 따라 할인율 반환'''
