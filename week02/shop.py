@@ -7,12 +7,12 @@ class Customer:
 
     def add_points(self, amount):
         '''구매액의 10% 적립'''
-        self.points += int(amount*0.10) # 소수점 버림
+        self.points += int(amount*0.05) # 소수점 버림
 
     def get_discount_rate(self):
         '''고객 등급에 따라 할인율 반환'''
         if self.grade == "vip":
-            return 0.15
+            return 0.1
         else:
             return 0.03
 
