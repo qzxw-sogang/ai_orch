@@ -1,19 +1,19 @@
 스크립트 1
-- 진단 보고 <br>
-    무엇이 - ValueError: invalid literal for int() with base 10: '5,200' <br>
-    어디서 - <br>
-        File "c:\Users\mingyu\Desktop\ai_orch\week04\buggy_1.py", line 19, in calc_total <br>
-        price = int(row["price"]) <br>
+- 진단 보고  
+    무엇이 - ValueError: invalid literal for int() with base 10: '5,200'  
+    어디서 -  
+        File "c:\Users\mingyu\Desktop\ai_orch\week04\buggy_1.py", line 19, in calc_total  
+        price = int(row["price"])  
     왜 - 5,200에 쉼표가 들어가 있어 int()에서 정수로 바꿔주지 못한 것으로 추정된다.
 
-- 프롬프트 <br>
-    ① 맥락 무엇을 하려는 코드인가 (한두 문장)<br>
-    판매 데이터를 읽어와 매출을 집계하는 스크립트인데 <br>
+- 프롬프트  
+    ① 맥락 무엇을 하려는 코드인가 (한두 문장)  
+    판매 데이터를 읽어와 매출을 집계하는 스크립트인데  
 
-    ② 코드 관련된 최소 범위의 코드 (전체 붙여넣기 금지)<br>
-    price = int(row["price"])에서 오류가 발생해 <br>
+    ② 코드 관련된 최소 범위의 코드 (전체 붙여넣기 금지)  
+    price = int(row["price"])에서 오류가 발생해  
 
-    ③ Traceback 에러 로그 전문 (요약하지 말고 그대로) <br>
+    ③ Traceback 에러 로그 전문 (요약하지 말고 그대로)  
 
     Traceback (most recent call last):
     File "c:\Users\mingyu\Desktop\ai_orch\week04\buggy_1.py", line 25, in <module>
@@ -22,10 +22,10 @@
         price = int(row["price"])
     ValueError: invalid literal for int() with base 10: '5,200'
 
-    ④ 내가 확인한 것 print/디버거로 파악한 변수 상태와 나의 가설 <br>
-    내 생각에는 5,200에 쉼표가 들어가 있어 int()에서 정수로 바꿔주지 못한 것으로 추정돼 <br>
+    ④ 내가 확인한 것 print/디버거로 파악한 변수 상태와 나의 가설  
+    내 생각에는 5,200에 쉼표가 들어가 있어 int()에서 정수로 바꿔주지 못한 것으로 추정돼  
 
-    ⑤ 요청 원하는 답의 형태를 지정 <br>
+    ⑤ 요청 원하는 답의 형태를 지정  
     원인이 뭔지 설명해주고 price 데이터에 int변환 할때 문제가 될수 있는 행이 있을지 찾는 방법을 제시해줘
 
 - 답변  
@@ -185,8 +185,11 @@
 - 답변  
     지금 데이터에서 읽히는 것
     9,999,999는 이상치라기보다 "값 없음"을 표시한 코드일 가능성이 큽니다. quantity는 25~75% 구간이 54~161인데 최댓값만 9,999,999입니다. 평균이 20,105로 크게 튄 것도 이 값 하나 때문으로 보입니다(9,999,999 ÷ 500 ≈ 20,000). 이런 값은 통계 기법으로 찾기 전에 규칙으로 먼저 걸러야 합니다.  
+
     음수 가격(-4,500)은 오류일 수도, 환불·반품일 수도 있습니다. 뺄지 말지는 코드 문제가 아니라 "총매출"을 어떻게 정의하느냐의 문제입니다. 판매액만 더한 총매출이면 제외하고, 환불을 차감한 순매출이면 포함합니다.  
+
     category(결측 10개)와 stock(결측 15개)은 매출 계산에 쓰이지 않습니다. df.dropna()를 그냥 쓰면 매출과 상관없는 행까지 최대 25개가 사라집니다. 결측치는 price와 quantity 기준으로만 판단해야 합니다.  
+    
     price 결측 2개가 원래 빈 칸인지, 변환에 실패한 값인지 모릅니다. errors="coerce"는 'N/A'나 '5200.0.0' 같은 값도 조용히 NaN으로 바꿉니다. 어떤 경우인지 한 번 확인해 두는 것이 좋습니다.  
     
     먼저 할 일: 변환 실패 값과 특수 코드 확인
