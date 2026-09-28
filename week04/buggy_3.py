@@ -21,11 +21,11 @@ def load_and_clean(path):
                               .str.strip())
     df["price"] = pd.to_numeric(df["price"], errors="coerce")
     df["revenue"] = df["price"] * df["quantity"]
-    return df
+    return df # FIXED: revenue가 만들어진 df를 반환하여 main에서 df에 접근할 수 있게 함
 
 def main():
     df = load_and_clean("dirty_sales.csv")
-    result = df.groupby("category")["revenue"].sum()   # <-- 여기서 죽는다
+    result = df.groupby("category")["revenue"].sum() 
     print(result)
 
 if __name__ == "__main__":
