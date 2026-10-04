@@ -16,13 +16,17 @@ legacy_report.py — 서강카페 월간 매출 리포트 생성 스크립트 (�
 
 import sqlite3
 from urllib.parse import urlparse
+import os
+from dotenv import load_dotenv
+load_dotenv() # .env 파일을 읽어 환경 변수로 로드
 
 # =====================================================================
 # 설정 — 레거시: 모든 값을 코드에 직접 적어 두었다
 # =====================================================================
-API_KEY = "sk-demo-week05-legacy-0000-NOT-A-REAL-KEY"
-# 예전 키 (혹시 몰라서 남겨둠): sk-demo-week05-old-1111-NOT-A-REAL-KEY
-DB_URL = "postgresql://report_admin:Sogang!2026@10.20.30.40:5432/sales_prod"
+API_KEY = os.getenv("API_KEY")
+if API_KEY is None: # 방어적 확인 습관
+    raise RuntimeError("API 키가 설정되지 않았습니다. .env 파일을 확인하세요.")
+DB_URL = os.getenv("DB_URL")
 MODEL = "claude-sonnet-4-5"
 REPORT_MONTH = "2026-09"
 
